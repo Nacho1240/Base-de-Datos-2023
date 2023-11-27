@@ -1,0 +1,1 @@
+docker exec -it  --user root mitube-db-v2 bash

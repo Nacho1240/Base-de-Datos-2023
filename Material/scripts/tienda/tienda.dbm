@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.4" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="8"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="clientes" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="540" y="40"/>
+	<column name="rut" not-null="true">
+		<type name="varchar" length="9"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="comuna">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="clientes_pk" type="pk-constr" table="public.clientes">
+		<columns names="rut" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="deptos" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="300" y="360"/>
+	<column name="numdep" not-null="true">
+		<type name="numeric" length="2" precision="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="14"/>
+	</column>
+	<column name="ciudad">
+		<type name="varchar" length="13"/>
+	</column>
+	<constraint name="deptos_pk" type="pk-constr" table="public.deptos">
+		<columns names="numdep" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="grados" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="20" y="360"/>
+	<column name="grado" not-null="true">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="sueldo_inf">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="sueldo_sup">
+		<type name="numeric" length="0"/>
+	</column>
+	<constraint name="grados_pk" type="pk-constr" table="public.grados">
+		<columns names="grado" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="producto" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1180" y="360"/>
+	<column name="codigo" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="precio">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="producto_pk" type="pk-constr" table="public.producto">
+		<columns names="codigo" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="venta" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="560" y="340"/>
+	<column name="num_venta" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="monto">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha">
+		<type name="date" length="0"/>
+	</column>
+	<column name="rut_vende">
+		<type name="varchar" length="9"/>
+	</column>
+	<column name="rut_cliente">
+		<type name="varchar" length="9"/>
+	</column>
+	<constraint name="venta_pk" type="pk-constr" table="public.venta">
+		<columns names="num_venta" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="detalle_venta" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="880" y="360"/>
+	<column name="num_venta">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="cod_producto">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="cantidad">
+		<type name="integer" length="0"/>
+	</column>
+</table>
+
+<table name="empleado" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="180" y="20"/>
+	<column name="rut" not-null="true">
+		<type name="varchar" length="9"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="cargo">
+		<type name="varchar" length="9"/>
+	</column>
+	<column name="rut_jefe">
+		<type name="varchar" length="9"/>
+	</column>
+	<column name="fecha_ingreso">
+		<type name="date" length="0"/>
+	</column>
+	<column name="sueldo">
+		<type name="numeric" length="7" precision="2"/>
+	</column>
+	<column name="comision">
+		<type name="numeric" length="7" precision="2"/>
+	</column>
+	<column name="numdep">
+		<type name="numeric" length="2"/>
+	</column>
+	<constraint name="empleado_pk" type="pk-constr" table="public.empleado">
+		<columns names="rut" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="rut_cliente" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.clientes" table="public.venta">
+	<columns names="rut_cliente" ref-type="src-columns"/>
+	<columns names="rut" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ru_vende" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.empleado" table="public.venta">
+	<columns names="rut_vende" ref-type="src-columns"/>
+	<columns names="rut" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="num_venta" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.venta" table="public.detalle_venta">
+	<columns names="num_venta" ref-type="src-columns"/>
+	<columns names="num_venta" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="cod_producto" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.producto" table="public.detalle_venta">
+	<columns names="cod_producto" ref-type="src-columns"/>
+	<columns names="codigo" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="num_depto" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.deptos" table="public.empleado">
+	<columns names="numdep" ref-type="src-columns"/>
+	<columns names="numdep" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="jefe" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.empleado" table="public.empleado">
+	<columns names="rut_jefe" ref-type="src-columns"/>
+	<columns names="rut" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_detalle_venta_venta" type="relfk" layers="0"
+	 src-table="public.detalle_venta"
+	 dst-table="public.venta" reference-fk="num_venta"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_detalle_venta_producto" type="relfk" layers="0"
+	 src-table="public.detalle_venta"
+	 dst-table="public.producto" reference-fk="cod_producto"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_venta_clientes" type="relfk" layers="0"
+	 src-table="public.venta"
+	 dst-table="public.clientes" reference-fk="rut_cliente"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_venta_empleado" type="relfk" layers="0"
+	 src-table="public.venta"
+	 dst-table="public.empleado" reference-fk="ru_vende"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_empleado_deptos" type="relfk" layers="0"
+	 src-table="public.empleado"
+	 dst-table="public.deptos" reference-fk="num_depto"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_empleado_empleado" type="relfk" layers="0"
+	 src-table="public.empleado"
+	 dst-table="public.empleado" reference-fk="jefe"
+	 src-required="false" dst-required="false">
+	<line>
+		<position x="424.734" y="108.283"/>
+	<position x="424.734" y="-3"/>
+	<position x="327.822" y="-3"/>
+	</line>
+</relationship>
+
+</dbmodel>

@@ -1,0 +1,1 @@
+docker run --network host --workdir /bdd --volume $(pwd):/bdd --name mitube-db-v2 -e POSTGRES_PASSWORD=123 -d postgres:16

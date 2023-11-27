@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.4" use-changelog="false" last-position="495,0" last-zoom="1" max-obj-count="6"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="minsal2" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="comunas" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="180" y="80"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="region">
+		<type name="varchar" length="30"/>
+	</column>
+	<column name="fase">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="comunas_pk" type="pk-constr" table="public.comunas">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="vacunatorios" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="740" y="80"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="direccion">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="comuna_id">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="vacunatorios_pk" type="pk-constr" table="public.vacunatorios">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="vacunas" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="200" y="400"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="vacuna">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="laboratorio">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="vacunas_pk" type="pk-constr" table="public.vacunas">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="inoculacion" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="740" y="340"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="vacuna_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="vacunatorio_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="rut">
+		<type name="varchar" length="10"/>
+	</column>
+	<column name="fecha_1_dosis">
+		<type name="date" length="0"/>
+	</column>
+	<column name="fecha_2_dosis">
+		<type name="date" length="0"/>
+	</column>
+	<column name="fecha_3_dosis">
+		<type name="date" length="0"/>
+	</column>
+	<column name="fecha_4_dosis">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="inoculacion_pk" type="pk-constr" table="public.inoculacion">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="personas" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1180" y="280"/>
+	<column name="rut" not-null="true">
+		<type name="varchar" length="10"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="apellido">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="email">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="telefono">
+		<type name="numeric" length="0"/>
+	</column>
+	<constraint name="personas_pk" type="pk-constr" table="public.personas">
+		<columns names="rut" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="comuna_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.comunas" table="public.vacunatorios">
+	<columns names="comuna_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="vacuna_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.vacunas" table="public.inoculacion">
+	<columns names="vacuna_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="vacunatorio_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.vacunatorios" table="public.inoculacion">
+	<columns names="vacunatorio_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="rut" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.personas" table="public.inoculacion">
+	<columns names="rut" ref-type="src-columns"/>
+	<columns names="rut" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_vacunatorios_comunas" type="relfk" layers="0"
+	 src-table="public.vacunatorios"
+	 dst-table="public.comunas" reference-fk="comuna_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_inoculacion_vacunas" type="relfk" layers="0"
+	 src-table="public.inoculacion"
+	 dst-table="public.vacunas" reference-fk="vacuna_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_inoculacion_vacunatorios" type="relfk" layers="0"
+	 src-table="public.inoculacion"
+	 dst-table="public.vacunatorios" reference-fk="vacunatorio_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_inoculacion_personas" type="relfk" layers="0"
+	 src-table="public.inoculacion"
+	 dst-table="public.personas" reference-fk="rut"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>

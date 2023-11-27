@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.4" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="12"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="miTube" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="video" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="880" y="260"/>
+	<column name="id_video" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="titulo">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="media">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="descrip">
+		<type name="varchar" length="200"/>
+	</column>
+	<column name="fecha">
+		<type name="date" length="0"/>
+	</column>
+	<column name="place">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="id_video" type="pk-constr" table="public.video">
+		<columns names="id_video" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="percepcion" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="540" y="20"/>
+	<column name="id_percepcion" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_video">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_tipo_feed_back">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_usuario">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="id_percepcion" type="pk-constr" table="public.percepcion">
+		<columns names="id_percepcion" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tipo_feed_back" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1020" y="40"/>
+	<column name="id_feed_back" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="id_tipo_feed_back" type="pk-constr" table="public.tipo_feed_back">
+		<columns names="id_feed_back" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="comentario" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="480" y="260"/>
+	<column name="id_comentario" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_video">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="texto">
+		<type name="varchar" length="500"/>
+	</column>
+	<column name="id_usuario">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="id_comentario" type="pk-constr" table="public.comentario">
+		<columns names="id_comentario" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="usuario" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="100" y="40"/>
+	<column name="id_usuario" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nickname">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="correo">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="password">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="id_usuario" type="pk-constr" table="public.usuario">
+		<columns names="id_usuario" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="lista" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="220" y="420"/>
+	<column name="id_lista" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="id_usuario">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="id_lista" type="pk-constr" table="public.lista">
+		<columns names="id_lista" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="lista_video" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="600" y="500"/>
+	<column name="id_lista">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_video">
+		<type name="integer" length="0"/>
+	</column>
+</table>
+
+<table name="suscripcion" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="0" y="440"/>
+	<column name="id_usuario">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_suscrito">
+		<type name="integer" length="0"/>
+	</column>
+</table>
+
+<table name="etiquetas_video" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1200" y="240"/>
+	<column name="id_etiqueta_video" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="id_tag">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_video">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="id_etiqueda_video" type="pk-constr" table="public.etiquetas_video">
+		<columns names="id_etiqueta_video" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tag" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1580" y="240"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="10"/>
+	</column>
+	<constraint name="id_tag" type="pk-constr" table="public.tag">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="id_video" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.video" table="public.percepcion">
+	<columns names="id_video" ref-type="src-columns"/>
+	<columns names="id_video" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_tipo_feed_back" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tipo_feed_back" table="public.percepcion">
+	<columns names="id_tipo_feed_back" ref-type="src-columns"/>
+	<columns names="id_feed_back" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_usuario" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuario" table="public.percepcion">
+	<columns names="id_usuario" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_video" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.video" table="public.comentario">
+	<columns names="id_video" ref-type="src-columns"/>
+	<columns names="id_video" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_usuario" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuario" table="public.comentario">
+	<columns names="id_usuario" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_usuario" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuario" table="public.lista">
+	<columns names="id_usuario" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_lista" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.lista" table="public.lista_video">
+	<columns names="id_lista" ref-type="src-columns"/>
+	<columns names="id_lista" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_video" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.video" table="public.lista_video">
+	<columns names="id_video" ref-type="src-columns"/>
+	<columns names="id_video" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_suscrito" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuario" table="public.suscripcion">
+	<columns names="id_suscrito" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_usuario" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuario" table="public.suscripcion">
+	<columns names="id_usuario" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_video" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.video" table="public.etiquetas_video">
+	<columns names="id_video" ref-type="src-columns"/>
+	<columns names="id_video" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="id_tag" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tag" table="public.etiquetas_video">
+	<columns names="id_tag" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_suscripcion_usuario" type="relfk" layers="0"
+	 src-table="public.suscripcion"
+	 dst-table="public.usuario" reference-fk="id_suscrito"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="11.6889" y="37.0677"/>
+	</label>
+</relationship>
+
+<relationship name="rel_percepcion_video" type="relfk" layers="0"
+	 src-table="public.percepcion"
+	 dst-table="public.video" reference-fk="id_video"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_comentario_video" type="relfk" layers="0"
+	 src-table="public.comentario"
+	 dst-table="public.video" reference-fk="id_video"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_lista_usuario" type="relfk" layers="0"
+	 src-table="public.lista"
+	 dst-table="public.usuario" reference-fk="id_usuario"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_lista_video_lista" type="relfk" layers="0"
+	 src-table="public.lista_video"
+	 dst-table="public.lista" reference-fk="id_lista"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_lista_video_video" type="relfk" layers="0"
+	 src-table="public.lista_video"
+	 dst-table="public.video" reference-fk="id_video"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_suscripcion_usuario1" type="relfk" layers="0"
+	 src-table="public.suscripcion"
+	 dst-table="public.usuario" reference-fk="id_usuario"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_etiquetas_video_video" type="relfk" layers="0"
+	 src-table="public.etiquetas_video"
+	 dst-table="public.video" reference-fk="id_video"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>

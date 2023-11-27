@@ -1,0 +1,4 @@
+docker run --network host --workdir /bdd --volume $(pwd):/bdd --name mascotas-db -e POSTGRES_PASSWORD=123 -d postgres:15
+docker start mascotas-db
+docker exec -it  --user root mascotas-db  bash
+psql -U postgres ley_chilito

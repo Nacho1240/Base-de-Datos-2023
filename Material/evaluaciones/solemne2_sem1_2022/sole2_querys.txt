@@ -1,0 +1,48 @@
+I - 
+2.
+x h - b - c - d      |
+                     |  R: (a,e,i,j),b,c,d,f,g,h
+  e - f              |
+    - g              |  R1: (a,e,i,j)
+    - h - b - c - d  |  R2: (e),b,c,d,f,g,h
+                     |  R3: (i),c,d
+  i - c - d          |
+                     |  R1: (a,e,i,j)
+x ab - c             |  R21: (e),f,g,h
+                     |  R22: (h),b
+x de - f             |  R23: (b),c
+                     |  R24: (c),d
+x abc - d            |  R3: (i),c
+                     |
+x efg - h            |  
+                     |  
+  a                  |  
+                     |
+                     |  
+                     |  
+
+
+II - Normalización
+
+
+Marca (id_marca, nombre)
+Modelo (id_modelo, nombre)
+Fabrica (id_fabrica, nombre)
+Tipo (id_tipo, nombre)
+Version (id_version, motor, id_transmision)
+Transmision (id_transmision, nombre)
+Auto (vin, id_modelo, id_tipo, id_fabrica, id_version)
+
+
+
+III - Querys
+
+1- select linea from turnos where rut = '123432-2'
+2-  select l.linea from lineas l 	
+       join (select linea, sum(capacidad) from metros group by linea) c 
+            on c.linea=l.linea 
+       join (select max(c.sum) from (select linea, sum(capacidad) from metros group by linea) c) cmax 
+            on cmax.max=c.sum ;
+
+3- select nombre from (select nombre, count(*) from estaciones group by (nombre)) ce where ce.count > 1;
+

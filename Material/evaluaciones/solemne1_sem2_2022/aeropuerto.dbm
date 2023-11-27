@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.4" use-changelog="false" last-position="314,82" last-zoom="1" max-obj-count="6"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="aeropuerto" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="aeropuerto" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1220" y="100"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="sigla">
+		<type name="varchar" length="10"/>
+	</column>
+	<column name="ciudad">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="region">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="pk_aeropuerto" type="pk-constr" table="public.aeropuerto">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="vuelo" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="700" y="120"/>
+	<column name="numero" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="ciudad_origen">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="ciudad_termino">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="pk_vuelo" type="pk-constr" table="public.vuelo">
+		<columns names="numero" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="registro" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="920" y="380"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="vuelo_numero">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha_despegue">
+		<type name="date" length="0"/>
+	</column>
+	<column name="fecha_aterrizaje">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="pk_registro" type="pk-constr" table="public.registro">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tripulacion" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="420" y="380"/>
+	<column name="registro_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="empleado_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="cargo">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="sueldo">
+		<type name="integer" length="0"/>
+	</column>
+</table>
+
+<table name="empleados" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="400" y="100"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="apellido">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="rut">
+		<type name="varchar" length="10"/>
+	</column>
+	<constraint name="pk_empleado" type="pk-constr" table="public.empleados">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="fk_vuelo" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.vuelo" table="public.registro">
+	<columns names="vuelo_numero" ref-type="src-columns"/>
+	<columns names="numero" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_registro" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.registro" table="public.tripulacion">
+	<columns names="registro_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_empleado" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.empleados" table="public.tripulacion">
+	<columns names="empleado_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="&quot;rel_Registro_Vuelo&quot;" type="relfk" layers="0"
+	 src-table="public.registro"
+	 dst-table="public.vuelo" reference-fk="fk_vuelo"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_Tripulacion_Registro&quot;" type="relfk" layers="0"
+	 src-table="public.tripulacion"
+	 dst-table="public.registro" reference-fk="fk_registro"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_Tripulacion_Empleados&quot;" type="relfk" layers="0"
+	 src-table="public.tripulacion"
+	 dst-table="public.empleados" reference-fk="fk_empleado"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>

@@ -1,0 +1,23 @@
+Pauta Solemne 2 - 2022 - semestre 2
+
+Normalizar R hasta FN3, asumiendo que ya esta en FN1.
+
+      R: A, B, C, D, E, F, G, H, I, J
+
+
+1. C->F   F->J   A->I   A->G   C->E   H->C
+   (A,H)->C   (A,H)->B   (A,H)->D   (J,H,A)->B
+
+
+Solución:
+  h - c - f - j     |  R: (a, h), b, c, d, e, f, g, i, j
+         - e          |
+                       |  R1: (a, h), b, d
+   a - i              |  R2: (h), c, e, f, j 
+     - g              |  R3: (a), g, i
+                       |
+   ah - b           |  R1: (a, h), b, d
+x     - c            |  R21: (h), c
+      - d             |  R22: (c), e, f
+                       |  R23: (f), j
+x  ahj - b           |  R3: (a), g, i

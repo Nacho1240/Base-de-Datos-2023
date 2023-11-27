@@ -1,0 +1,231 @@
+Normalizar R hasta FN3, asumiendo que ya esta en FN1.
+
+      R: A, B, C, D, E, F, G, H, I, J
+
+1. C->F   F->J   A->I   A->G   C->E   H->C
+   (A,H)->C   (A,H)->B   (A,H)->D   (J,H,A)->B
+
+2. J->I   J->F   I->H   I->D   F->A   F->B   J->A
+   (E,J)->C   (E,J)->H   (J,C)->B   (J,C)->D
+
+3. (J,B)->E   (J,B)->D   (J,B,H)->A   (J,C)->F   A->F
+     H->A   C->B   C->E   H->G   C->F   J->D   G->H
+
+Respuestas
+
+1.
+   h - c - f - j     |  R: (a, h), b, c, d, e, f, g, i, j
+         - e         |
+                     |  R1: (a, h), b, d
+   a - i             |  R2: (h), c, e, f, j 
+     - g             |  R3: (a), g, i
+                     |
+   ah - b            |  R1: (a, h), b, d
+x     - c            |  R21: (h), c
+      - d            |  R22: (c), e, f
+                     |  R23: (f), j
+x  ahj - b           |  R3: (a), g, i
+
+
+2.
+   j - i - h         |  R: (e, g, j), a, b, c, d, f, h, i
+         - d         |
+x    - a             |  R1: (e, g, j)
+     - f - a         |  R2: (j), a, b, d, f, h, i
+         - b         |  R3: (e, j), c
+                     |
+   ej - c            |  R1: (e, g, j)
+x     - h            |  R21: (j), f, i
+                     |  R22: (i), d, h
+x  jc - b            |  R23: (f), a, b
+x     - d            |  R3: (e, j), c
+                     |
+   g                 | 
+ 
+
+3.
+   jb - e            |  R: (b, c, h, i, j), a, d, e, f, g
+x     - d            |
+                     |  R1: (b, c, h, i, j)
+x  jbh - a           |  R2: (b, j), e
+                     |  R3: (h) a, f, g
+x  jc - f            |  R4: (c), b, e, f
+                     |  R5: (j), d
+   h - a - f         |
+     - g - h         |  R1: (b, c, h, i, j)
+                     |  R2: (b,j), e
+   c - b             |  R31: (h), a, g
+     - e             |  R32: (a), f
+     - f             |  R4: (c), b, e, f
+                     |  R5: (j), d
+   j - d             |
+                     |
+   i                 |
+
+================================================================
+Normalizar R hasta FNBC, asumiendo que ya esta en FN1.
+
+      R: A, B, C, D, E, F, G, H, I, J
+
+1.  J->A   G->B   E->I   A->I   G->D   A->E   B->G
+    C->J   A->H   (G,B)->D   (G,J)->A   (F,J)->G
+   (C,G,B)->I   (D,J,F)->G   (C,A,E)->B
+
+2.  D->B   H->I   J->B   B->J   G->A   E->D   D->A
+    B->H   D->J   A->E   (D,C)->I  (D,I)->C   (D,E)->B
+
+3.  F->I   G->F   I->G   H->D   J->C   D->J   C->E
+    J->E   (F,J)->G   (F,G)->I   (F,D)->J   (A,D)->F
+    (B,F,G)->E   (I,D,A)->F
+
+Respuestas
+
+1.
+   c - j - a //- i    |
+             - e - i  |  R: (a, c, e, f, j), b, d, g, h, i
+             - h      |
+                      |  R1: (a, c, e, f, j)
+x  b - g - b          |  R2: (c), a, e, h, i, j
+x        - d          |  R3: (f, j), b, d, g
+                      |  R4: (a, c, e), b
+x  e - i              |
+                      |  R1: (a, c, e, f, j)
+x  gb - d             |  R21: (c), j
+                      |  R22: (j), a
+x  gj - a             |  R23: (a), e, h
+                      |  R24: (e), i
+   fj - g - b //- g   |  R31: (f, j), g
+          - d         |  R32: (g), b, d
+                      |  R4: (a, c, e), b
+x  cgb - i            |
+                      |  R11: (c, f)
+x  djf - g            |  R21: (c), j, b
+                      |  R22: (j), a
+   cae - b            |  R23: (a), e, h
+                      |  R24: (e), i
+                      |  R31: (f, j), g
+                      |  R32: (g), b, d
+                      |  r41: (c), b  trasladada a R21
+
+2.
+   g - a - e - d - b - j - b  |
+                     - h - i  |  R: (d, f, g, i), a, b, c, e, h, j
+x                - a - e      |
+x                - j          |  R1: (d, f, g, i) 
+                              |  R2: (g), a, b, d, e, h, i, j
+x  h - i                      |  R3: (d, i), c
+                              |
+x  j - b - j                  |  R1: (d, f, g, i) 
+                              |  R21: (g), a
+x  g - a - e                  |  R22: (a), e, d, b
+                              |  R23: (b), j, h
+x  dc - i                     |  R24: (h), i
+                              |  R3: (d, i), c
+   di - c                     |
+                              |  R11: (f, g)
+x  de - b                     |  R21: (g), a
+                              |  R22: (a), e, d, b
+                              |  R23: (b), j, h
+                              |  R24: (h), i
+                              |  R31: (d), c
+
+3.
+   g - f - i - g      |    
+                      |  R: (a, b, d, f, g, h), c, e, i, j
+   h - d - j //- e    |
+             - c - e  |  R1: (a, b, d, f, g, h)
+x  j - c - e          |  R2: (f), g, i
+                      |  R3: (h), c, d, e, j
+x  fj - g             |  R4: (a, d), f, g, i
+                      |  R5: (b, f, g), e
+x  fg - i             |
+                      |  R1: (a, b, d, f, g, h)
+x  fd - j             |  R2: (g), f, i
+                      |  R31: (h), d
+   ad - f             |  R32: (d), j
+                      |  R33: (j), c
+   bfe - g            |  R34: (c), e
+                      |  R41: (a, d), f
+x  ida - f            |  R5: (b, f, g), e
+                      |
+                      |  R11: (a, b, h)
+                      |  R2: (f), g, i
+                      |  R31: (h), d
+                      |  R32: (d), j
+                      |  R33: (j), c
+                      |  R34: (c), e
+                      |  R41: (a, d), f
+                      |  R51: (b, f), e  o  R51: (b, g), e
+
+===================================================================
+1. Un banco requiere llevar el control de los saldos de las cuentas
+   de sus clientes. Ademas, registrar todos los movimientos hechos
+   en cada dia, es decir, los depositos y giros realizados, la hora
+   en que fueron efectuados y el monto de cada transaccion.
+
+   Para ello, ha definido la siguiente relacion, la cual debe ser
+   normalizada hasta FNBC.
+
+  Cuentas: numero, nombre_titular, fecha, saldo_inicial_dia,
+    movimientos_dia, saldo_final_dia, direccion_titular, rut_titular
+
+
+2. Normalizar R hasta FNBC, la cual solo tiene atributos atomicos
+
+   R: a, b, c, d, e, f, g, h, i
+
+   b->c   c->d   e->f   e->g   e->h   i->c   h->b
+   (a,b)->c   (d,e)->f   (a,b,c)->d   (e,f,g)->h
+
+
+Respuestas
+
+1.
+  Cuentas1: (numero, fecha), nombre_titular, saldo_inicial_dia,
+           Saldo_final_dia, direccion_titular, rut_titular
+
+  Movimientos1: (numero, fecha, tipo), hora, monto
+---
+  Cuentas2: (numero, fecha), saldo_inicial_dia, saldo_final_dia
+
+  Titulares2: (numero), nombre_titular, direccion_titular, rut_titular
+
+  Movimientos1: (numero, fecha, tipo, hora), monto
+---
+  Cuentas2: (numero, fecha), saldo_inicial_dia, saldo_final_dia
+
+  Titulares3: (numero), rut_titular
+
+  Clientes3: (rut_titular), nombre_titular, direccion_titular
+
+  Movimientos1: (numero, fecha, tipo, hora), monto
+--
+  Cuentas2: (numero, fecha), saldo_inicial_dia, saldo_final_dia
+
+  Titulares3: (numero), rut_titular
+
+  Clientes3: (rut_titular), nombre_titular, direccion_titular
+
+  Movimientos1: (numero, fecha, tipo, hora), monto
+
+2.
+x h - b - c - d      |
+                     |  R: (a,e,i),b,c,d,f,g,h
+  e - f              |
+    - g              |  R1: (a,e,i)
+    - h - b - c - d  |  R2: (e),b,c,d,f,g,h
+                     |  R3: (i),c,d
+  i - c - d          |
+                     |  R1: (a,e,i)
+x ab - c             |  R21: (e),f,g,h
+                     |  R22: (h),b
+x de - f             |  R23: (b),c
+                     |  R24: (c),d
+x abc - d            |  R3: (i),c
+                     |
+x efg - h            |  R1: (a,e,i)
+                     |  R21: (e),f,g,h
+  a                  |  R22: (h),b
+                     |  R23: (b),c
+                     |  R24: (c),d
+                     |  R3: (i),c
