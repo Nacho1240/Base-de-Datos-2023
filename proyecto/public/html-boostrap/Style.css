@@ -1,0 +1,160 @@
+.color{
+
+    background-color: radial-gradient(circle at 62.1% 4.84%, #9f53b4 0, #7a4399 16.67%, #55327a 33.33%, #321f59 50%, #120c38 66.67%, #00001d 83.33%, #000000 100%);
+
+}
+
+.card {
+  background-color: #fff;
+  max-width: 500px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+  padding: 30px 20px;
+}
+
+
+.nav{
+
+padding: 0 40px;
+height: 80px;
+background-color: #F15156;
+color: beige;
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+
+}
+
+.transparent-text {
+    -webkit-background-clip: text;
+    background-clip:text;
+    -webkit-text-fill-color: transparent;
+    background-image: url('/html-boostrap/Banner.jpg');
+    top:200px;
+    font-size:400%;
+    font-weight: 1000;
+
+  }
+
+.cuadro-text {
+    background-color: rgba(255,255,255,1);
+    text-align: center;
+    width: auto;
+    height: auto;
+
+
+}
+
+.fade-me-out.htmx-swapping {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+  }
+
+.btn-group{
+  border:none;
+}
+  
+.formal{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; justify-content: center;
+}
+
+main{
+  flex-grow: 1;
+}
+body {
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+}
+.sticky-top {
+  background-color: #fff;
+  max-width: 500px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+  padding: 30px 20px;
+}
+
+.background-cover {
+  background-image: url('/html-boostrap/Banner.jpg');
+  background-size: cover;
+  display: flex;
+  width: 100%;
+  height: 300px;
+}
+
+.back-vote{
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+background: url('/html-boostrap/back.jpg') no-repeat;
+background-size: cover;
+background-position: center;
+
+
+}
+.radio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-check-input {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border: 2px solid #007BFF;
+  border-radius: 50%;
+  position: relative;
+}
+
+.form-check-input:checked::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: #007BFF;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form-check-label {
+  font-size: 18px;
+}
+
+
+
+.thumbnail {
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
+  margin-right: 10px;
+  border: 1px solid #000;
+}
+
+.thumb-santander {
+  background-image: url('/html-boostrap/Santander.jpeg');
+}
+
+.thumb-chile {
+  background-image: url('/html-boostrap/BChile.jpeg');
+}
+
+.thumb-falabella {
+  background-image: url('/html-boostrap/Banco_Fallabella.jpeg');
+}
+
+.thumb-Itau {
+  background-image: url('/html-boostrap/Itau.jpeg');
+}

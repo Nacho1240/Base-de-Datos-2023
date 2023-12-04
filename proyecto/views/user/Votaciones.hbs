@@ -1,0 +1,34 @@
+{{> navbas_user}}
+<body style="background-image: linear-gradient(to right top, #f2ebf1, #d2cad1, #b3aab2, #958b93, #786d76);background-image: linear-gradient(to left bottom, #f2ebf1, #dec5e6, #bfa3e0, #8f85df, #3a6edf);">
+  
+</body>
+<div class="container mt-4">
+  <h1>Eventos</h1>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID del evento</th>
+          <th scope="col">Nombre del evento</th>
+          <th scope="col">Fecha de cierre</th>
+          <th scope="col">Activo?</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each eventos}}
+          <tr>
+            <td>{{customId this}}</td>
+            <td>{{customTitle this}}</td>
+            <td>{{customFechaTermino this}}</td>
+            {{#if (isActivo (customActivo this))}}
+  <td>Activo</td>
+{{else}}
+  <td>Finalizado</td>
+{{/if}}
+
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

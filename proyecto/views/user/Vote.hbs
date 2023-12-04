@@ -1,0 +1,60 @@
+
+{{>navvote}}
+
+<body style="background-image: linear-gradient(to right top, #c8deff, #acd1e0, #a4c1bf, #a1aea6, #9a9b97);">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="text-center">A Votar!</h1>
+                        <hr>
+                        <p><strong>Nominados por convivencia</strong></p>
+                        <p>Selecciona una opción:</p>
+
+                        <form action="/user/Vote/{{eventId}}" method="POST">
+
+                            <div class="radio-container">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="Santander">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        <div class="thumbnail thumb-santander"></div>
+                                        Banco Santander
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="Chile">
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        <div class="thumbnail thumb-chile"></div>
+                                        Banco de Chile
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" value="Falabella">
+                                    <label class="form-check-label" for="flexRadioDefault3">
+                                        <div class="thumbnail thumb-falabella"></div>
+                                        Banco Falabella
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" value="Itau">
+                                    <label class="form-check-label" for="flexRadioDefault4">
+                                        <div class="thumbnail thumb-Itau"></div>
+                                        Banco Itau
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
