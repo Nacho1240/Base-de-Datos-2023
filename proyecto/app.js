@@ -51,13 +51,17 @@ const CreateUser = async(req,res) =>{
 // ademas tambien investigar datos en general, como usar where y join
 
 const GetuserName = async(req,res) =>{
-  const name = req.body;
+  const nombre= req.body.name;
 
-  const sol = await client.query('SELECT usuarios.numbre FROM usuarios')
+  const sol = await client.query('SELECT usuarios.name FROM usuarios WHERE usuarios.name = $1', [nombre]);
+  res.json({message:'Error interno al crear nuevo usuario'});
 }
 
+
+
 module.exports = {
-  getUsers
+  getUsers,
+  GetuserName
 }
 
 export { app };
