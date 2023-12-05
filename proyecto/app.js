@@ -59,9 +59,22 @@ const GetuserName = async(req,res) =>{
 
 
 
+const CreateEvent = async(req,res) =>{
+const name = req.body.name;
+const fecha = req.body.date;
+//const Candidatos = //usar misma tecnica que en la entrega 3, solicitar datos individuales y luego crear un arreglo
+//crear la base de datos
+const response = await client.query('INSERT INTO eventos name, fecha ');
+
+res.json({message:'Error interno al crear nuevo Evento'});
+}
+
+
+
 module.exports = {
   getUsers,
-  GetuserName
+  GetuserName,
+  CreateEvent
 }
 
 export { app };
