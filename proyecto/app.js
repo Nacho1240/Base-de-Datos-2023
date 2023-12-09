@@ -1,9 +1,7 @@
 
 import express from "express";
-import path from "path";
-import Evento from "./models/Event.js";
 import { Client } from 'pg';
-import { error } from "console";
+
 
 const app = express();
 
@@ -18,63 +16,198 @@ const Database ={
 
 
 const client = new Client(Database);
-
-
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+
+
+
+
 
 //getters
-
-
-const getUsers= async(req,res) =>{
-  const sol = await client.query('SELECT * FROM usuarios');
-  console.log(sol.rows);
+const GetuserData = async(req,res) =>{
+  try{
+const id = req.params.id;
+const sol = await client.query('SELECT usuarios.id, usuarios.name,usuarios.apellido ,usuarios.email FROM usuarios WHERE id = $1', [id]);
+console.log(sol.rows);
+  }catch(e){
+    console.log(e);
+    res.json({message:'Error interno del servidor'});
+  }
 }
+
+
+
+
+const getEvents = async(req,res)=>{
+const sol = await client.query('SELECT eventos.id, eventos.name, eventos.fecha_inicio FROM eventos');
+console.log(sol.rows);
+}
+
+
+   const getallUsers= async(req,res) =>{
+     const sol = await client.query('SELECT usuarios.id, usuarios.name,usuarios.apellido ,usuarios.email FROM usuarios');
+     console.log(sol.rows);
+   }
 
 //postters
 
 
 
+
+
+
+//ingresar usuario
+
+const UserLogin = async(req,res) =>{
+  const {email, password} = req.body;
+  const sol = await client.query('SELECT email,password FROM usuarios WHERE email = $1 AND password = $2', [email,password]);
+  if(sol.rows.length == 1){
+    res.json({message:'Usuario logeado exitosamente', body:{user:{email, password}}});
+  }else{
+    res.json({message:'Error al iniciar sesion'});
+  }
+
+}
+
+
+//crear usuario
 const CreateUser = async(req,res) =>{
-  const {name, email, password} = req.body;
+  const {name, lastname, email, password} = req.body;
 
+ try{
 
-  const sol = await client.query('INSERT INTO usuarios (name, email, password) VALUES ($1, $2, $3)', [name,email,password]);
-  res.json({message:'Error interno al crear nuevo usuario'});
+const verify = await client.query('SELECT email FROM usuarios WHERE email = $1', [email]);
+if(verify.rows.length == 1){
+  return res.json('El correo ya existe');
 
+ }else{
+  const sol = await client.query('INSERT INTO usuarios (name,lastname, email, password) VALUES ($1, $2, $3, $4)', [name,lastname,email,password]);
+  res.json({message:'Usuario creado exitosamente', body:{user:{name,lastname, email, password}}});
+ }
+
+  }catch(error){
+    console.log(error);
+    res.json({message:'Error interno al crear nuevo usuario'});
+  }
 
 }
-// investigar como obtener un nombre en especifico
-// ademas tambien investigar datos en general, como usar where y join
 
-const GetuserName = async(req,res) =>{
-  const nombre= req.body.name;
 
-  const sol = await client.query('SELECT usuarios.name FROM usuarios WHERE usuarios.name = $1', [nombre]);
-  res.json({message:'Error interno al crear nuevo usuario'});
+
+
+//votar por candidato
+
+const Vote = async(req,res) =>{
+ const eventoId = req.params.id;
+const {usuario_id, candidato_id}=req.body;
+
+ try{
+  if (!usuario_id || !candidato_id || !eventoId) {
+    return res.status(400).json({ error: 'Se requieren el ID de usuario, el ID de candidato y el ID de evento para votar.' });
+  }
+
+  const verify = await pool.query('SELECT usuario_id FROM votos WHERE usuario_id = $1 AND candidato_id = $2 AND evento_id = $3',
+      [usuario_id, candidato_id, evento_id]);
+
+      if (verify.rows.length == 1) {
+        return res.status(400).json({ error: 'El usuario ya votó por este candidato en este evento.' });
+      }
+
+
+
+const response = await client.query('INSERT INTO votos (usuario_id, candidato_id, evento_id) VALUES ($1, $2, $3)',[usuario_id,candidato_id,eventoId]);
+
+ }catch(e){
+  console.log(e);
+  res.json({message:'Error interno del servidor'});
+
+ }
+
+}
+
+
+const ChangePassword = async(req,res) =>{
+
+const{correo, password, newpassword} = req.body;
+
+try{
+const verify = await client.query('SELECT email,password FROM usuarios WHERE email = $1 AND password = $2', [email,password]);
+if(verify.length ==1){
+ 
+  const action = await client.query('UPDATE usuarios SET password = $1 where email = $2', [newpassword,email])
+  res.json({message:'Datos actualizados correctamente'})
+}else{
+
+res.json({message:'Error con las credenciales ingresadas'});
+}
+  
+}catch(e){
+  console.log(e);
+  res.json({message:'Error interno del servidor'});
+}
 }
 
 
 
+// los eventos tienen titulo, fecha de inicio, y los candidatos deben ser una tabla aparte.
 const CreateEvent = async(req,res) =>{
-const name = req.body.name;
-const fecha = req.body.date;
-//const Candidatos = //usar misma tecnica que en la entrega 3, solicitar datos individuales y luego crear un arreglo
-//crear la base de datos
-const response = await client.query('INSERT INTO eventos name, fecha ');
+const {name, fecha, candidatos} = req.body;
 
-res.json({message:'Error interno al crear nuevo Evento'});
+if (!name || !fecha|| !candidatos ||  candidatos.length === 0) {
+  return res.status(400).json({ error: 'Datos de solicitud inválidos.' });
 }
 
+//const Candidatos = //usar misma tecnica que en la entrega 3, solicitar datos individuales y luego crear un arreglo
+try{
+
+const response = await client.query('INSERT INTO eventos (name, fecha) VALUES ($1,$2) RETURNING id', [name,fecha]);
+
+//relacion 
+
+const eventoId = response.rows[0].id;
+
+const values = candidatos.map(candidatoId => [eventoId, candidatoId]);
+
+await client.query('INSERT INTO candidatos_eventos (evento_id, candidato_id) VALUES $1',[values]);
+}catch(e){
+  console.log(e);
+  res.json({message:'Error interno al crear nuevo Evento'});
+}
+
+}
+
+
+
+
+
+
+const DeleteEvent = async(req,res) =>{
+
+  const {email, password, id} = req.body;
+  const verify = await client.query('SELECT email,password FROM usuarios WHERE email =$1 AND password =$2',[email,password]);
+try{
+if(verify.length ==1 && email == 'ADMIN'){
+  res.json({message:'Verificacion Exitosa, se procedera a eliminar el evento con el id solicitado.'});
+   const response = await client.query('DELETE FROM eventos WHERE id = $1', [id]);
+res.json({message: 'Evento con id', body:{evento:{id}}}, 'Eliminado.');
+}else{
+  res.json({message:'No tienes autorizacion, favor abandone la solicitud.'});
+}
+}catch(e){
+  res.json({message:'Error interno del Sistema.'})
+}
+}
 
 
 module.exports = {
-  getUsers,
-  GetuserName,
-  CreateEvent
+  getallUsers,
+  GetuserData,
+  CreateEvent,
+  DeleteEvent,
+  ChangePassword,
+  UserLogin,
+  Vote,
+  getEvents
 }
 
 export { app };
