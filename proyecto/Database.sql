@@ -28,5 +28,6 @@ CREATE TABLE votos (
     id SERIAL PRIMARY KEY,
     usuario_id INT REFERENCES usuarios(id),
     candidato_id INT REFERENCES candidatos(id),
+    evento_id INT REFERENCES eventos(id),
     fecha_voto TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

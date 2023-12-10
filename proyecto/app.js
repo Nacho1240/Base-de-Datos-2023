@@ -8,21 +8,31 @@ import { Client } from 'pg';
 
 const Database ={
  user: 'postgres',
- host: 'hostlocal',
- database: 'psql',
- password: '21062004',
+ host: 'localhost',
+ database: 'proyecto',
+ password: 'Ce7Ah7+D',
  port: 5432,
 };
 
 
 const client = new Client(Database);
 
+//conexion a la base de datos.
+
+client.connect()
+  .then(() => console.log('Conectado a la base de datos'))
+  .catch(err => console.error('Error al conectar a la base de datos', err));
+
+
+
+
 //getters
 const GetuserData = async(req,res) =>{
   try{
 const id = req.params.id;
-const sol = await client.query('SELECT usuarios.id, usuarios.name,usuarios.apellido ,usuarios.email FROM usuarios WHERE id = $1', [id]);
+const sol = await client.query('SELECT  usuarios.nombre,usuarios.apellido ,usuarios.email FROM usuarios WHERE id = $1', [id]);
 console.log(sol.rows);
+res.json(sol.rows);
   }catch(e){
     console.log(e);
     res.json({message:'Error interno del servidor'});
@@ -33,13 +43,15 @@ console.log(sol.rows);
 
 
 const getEvents = async(req,res)=>{
-const sol = await client.query('SELECT eventos.id, eventos.name, eventos.fecha_inicio FROM eventos');
+const sol = await client.query('SELECT eventos.id, eventos.titulo, eventos.fecha_inicio FROM eventos');
+res.json(sol.rows);
 console.log(sol.rows);
 }
 
 
    const getallUsers= async(req,res) =>{
-     const sol = await client.query('SELECT usuarios.id, usuarios.name,usuarios.apellido ,usuarios.email FROM usuarios');
+     const sol = await client.query('SELECT usuarios.id, usuarios.nombre,usuarios.apellido ,usuarios.email FROM usuarios');
+     res.json(sol.rows);
      console.log(sol.rows);
    }
 
@@ -72,10 +84,10 @@ const CreateUser = async(req,res) =>{
 
 const verify = await client.query('SELECT email FROM usuarios WHERE email = $1', [email]);
 if(verify.rows.length == 1){
-  return res.json('El correo ya existe');
+  return res.json('El correo ya esta registrado, favor ingrese otro.');
 
  }else{
-  const sol = await client.query('INSERT INTO usuarios (name,lastname, email, password) VALUES ($1, $2, $3, $4)', [name,lastname,email,password]);
+  const sol = await client.query('INSERT INTO usuarios (nombre,apellido, email, password) VALUES ($1, $2, $3, $4)', [name,lastname,email,password]);
   res.json({message:'Usuario creado exitosamente', body:{user:{name,lastname, email, password}}});
  }
 
@@ -91,42 +103,47 @@ if(verify.rows.length == 1){
 
 //votar por candidato
 
-const Vote = async(req,res) =>{
- const eventoId = req.params.id;
-const {usuario_id, candidato_id}=req.body;
+const Vote = async (req, res) => {
+  const eventoId = req.params.id;
+  const { email, candidato_id } = req.body;
 
- try{
-  if (!usuario_id || !candidato_id || !eventoId) {
-    return res.status(400).json({ error: 'Se requieren el ID de usuario, el ID de candidato y el ID de evento para votar.' });
+  try {
+    if (!email || !candidato_id || !eventoId) {
+      return res.status(400).json({ error: 'Se requieren el email del usuario, el ID de candidato y el ID de evento para votar.' });
+    }
+
+    const temp = await client.query('SELECT id FROM usuarios WHERE email = $1', [email]);
+
+    if (temp.rows.length === 0) {
+      return res.status(400).json({ error: 'Usuario no encontrado con el correo electrónico proporcionado.' });
+    }
+
+    const usuario_id = temp.rows[0].id;
+
+    const verify = await client.query('SELECT usuario_id FROM votos WHERE usuario_id = $1 AND candidato_id = $2 AND evento_id = $3',
+      [usuario_id, candidato_id, eventoId]);
+
+    if (verify.rows.length === 1) {
+      return res.status(400).json({ error: 'El usuario ya votó por este candidato en este evento.' });
+    }
+
+    const response = await client.query('INSERT INTO votos (usuario_id, candidato_id, evento_id) VALUES ($1, $2, $3)', [usuario_id, candidato_id, eventoId]);
+
+    res.json({ message: 'Voto realizado exitosamente', body: { voto: { usuario_id, candidato_id, eventoId } } });
+  } catch (e) {
+    console.error(e);
+    res.json({ message: 'Error interno del servidor' });
   }
+};
 
-  const verify = await pool.query('SELECT usuario_id FROM votos WHERE usuario_id = $1 AND candidato_id = $2 AND evento_id = $3',
-      [usuario_id, candidato_id, evento_id]);
-
-      if (verify.rows.length == 1) {
-        return res.status(400).json({ error: 'El usuario ya votó por este candidato en este evento.' });
-      }
-
-
-
-const response = await client.query('INSERT INTO votos (usuario_id, candidato_id, evento_id) VALUES ($1, $2, $3)',[usuario_id,candidato_id,eventoId]);
-
- }catch(e){
-  console.log(e);
-  res.json({message:'Error interno del servidor'});
-
- }
-
-}
 
 
 const ChangePassword = async(req,res) =>{
 
-const{correo, password, newpassword} = req.body;
-
+const{email, password, newpassword} = req.body;
 try{
 const verify = await client.query('SELECT email,password FROM usuarios WHERE email = $1 AND password = $2', [email,password]);
-if(verify.length ==1){
+if(verify.rows.length ==1){
  
   const action = await client.query('UPDATE usuarios SET password = $1 where email = $2', [newpassword,email])
   res.json({message:'Datos actualizados correctamente'})
@@ -154,15 +171,18 @@ if (!name || !fecha|| !candidatos ||  candidatos.length === 0) {
 //const Candidatos = //usar misma tecnica que en la entrega 3, solicitar datos individuales y luego crear un arreglo
 try{
 
-const response = await client.query('INSERT INTO eventos (name, fecha) VALUES ($1,$2) RETURNING id', [name,fecha]);
+const response = await client.query('INSERT INTO eventos (titulo, fecha_inicio) VALUES ($1,$2) RETURNING id', [name,fecha]);
 
 //relacion 
+console.log(response.rows[0].id);
 
 const eventoId = response.rows[0].id;
-
 const values = candidatos.map(candidatoId => [eventoId, candidatoId]);
 
-await client.query('INSERT INTO candidatos_eventos (evento_id, candidato_id) VALUES $1',[values]);
+for (const [eventoId, candidatoId] of values) {
+  await client.query('INSERT INTO candidatos_eventos (evento_id, candidato_id) VALUES ($1, $2)', [eventoId, candidatoId]);
+ 
+} res.json({message:'Evento creado exitosamente'});
 }catch(e){
   console.log(e);
   res.json({message:'Error interno al crear nuevo Evento'});
@@ -178,17 +198,18 @@ await client.query('INSERT INTO candidatos_eventos (evento_id, candidato_id) VAL
 const DeleteEvent = async(req,res) =>{
 
   const {email, password, id} = req.body;
-  const verify = await client.query('SELECT email,password FROM usuarios WHERE email =$1 AND password =$2',[email,password]);
+  const verify = await client.query('SELECT email,password FROM ADMINS WHERE email =$1 AND password =$2',[email,password]);
 try{
-if(verify.length ==1 && email == 'ADMIN'){
+if(verify.rows.length ==1){
+  const del = await client.query('DELETE FROM candidatos_eventos WHERE evento_id = $1', [id]);
+  const response = await client.query('DELETE FROM eventos WHERE id = $1', [id]);
   res.json({message:'Verificacion Exitosa, se procedera a eliminar el evento con el id solicitado.'});
-   const response = await client.query('DELETE FROM eventos WHERE id = $1', [id]);
-res.json({message: 'Evento con id', body:{evento:{id}}}, 'Eliminado.');
 }else{
   res.json({message:'No tienes autorizacion, favor abandone la solicitud.'});
 }
 }catch(e){
   res.json({message:'Error interno del Sistema.'})
+  console.log(e);
 }
 }
 
@@ -201,6 +222,7 @@ module.exports = {
   ChangePassword,
   UserLogin,
   Vote,
-  getEvents
+  getEvents,
+  CreateUser
 }
 
