@@ -5,15 +5,20 @@ const router = Router();
 
 
 
-router.get('/users', getallUsers);//confirmado
-router.get('/userdata/:id',GetuserData);//confirmado
-router.get('/events', getEvents);//confirmado
-router.post('/createUser', CreateUser);//confirmado
-router.post('/createEvent', CreateEvent);//confirmado
-router.post('/deleteEvent', DeleteEvent);//confirmado
-router.post('/changePassword', ChangePassword);//confirmado
-router.post('/userLogin', UserLogin); //confirmado
+router.get('/users', getallUsers);
+router.get('/userdata/:id',GetuserData);
+router.get('/events', getEvents);
+router.post('/createUser', CreateUser);
+router.post('/createEvent', CreateEvent);
+router.post('/deleteEvent', DeleteEvent);
+router.post('/changePassword', ChangePassword);
+router.post('/userLogin', UserLogin); 
 router.post('/vote/:id', Vote);
 
 
 export default router;
+
+
+
+
+
