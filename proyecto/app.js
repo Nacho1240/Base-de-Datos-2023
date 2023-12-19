@@ -15,6 +15,14 @@ const Database ={
 };
 
 
+
+
+
+
+
+
+
+
 const client = new Client(Database);
 
 //conexion a la base de datos.
